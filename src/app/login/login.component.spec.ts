@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import { AuthStore } from '../store/auth.store';
-import { Router } from '@angular/router';
 import { RememberMeService } from '../shared/services/remember-me.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthFasadeService } from '../store/auth/auth-fasade.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -13,8 +12,9 @@ describe('LoginComponent', () => {
   const TEST_EMAIL = 'test@example.org';
   const TEST_PASSWORD = 'test123';
 
-  const AuthStoreMock = jasmine.createSpyObj(AuthStore, ['email', 'login']);
-  const RouterMock = jasmine.createSpyObj('Router', ['navigate']);
+  const AuthFasadeServiceMock = jasmine.createSpyObj('AuthFasadeService', [
+    'login',
+  ]);
   const RememberMeServiceMock = jasmine.createSpyObj('RememberMeService', [
     'set',
     'get',
@@ -25,8 +25,7 @@ describe('LoginComponent', () => {
       imports: [LoginComponent, ReactiveFormsModule],
       providers: [
         LoginComponent,
-        { provide: AuthStore, useValue: AuthStoreMock },
-        { provide: Router, useValue: RouterMock },
+        { provide: AuthFasadeService, useValue: AuthFasadeServiceMock },
         { provide: RememberMeService, useValue: RememberMeServiceMock },
       ],
     })
@@ -36,32 +35,6 @@ describe('LoginComponent', () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should navigate to /home if authStore.email() returns a truthy value', () => {
-    // arrange
-    RouterMock.navigate.calls.reset();
-    AuthStoreMock.email.and.returnValue('test@example.com');
-
-    // act
-    TestBed.inject(LoginComponent);
-    fixture.detectChanges();
-
-    // assert
-    expect(RouterMock.navigate).toHaveBeenCalledWith(['/home']);
-  });
-
-  it('should not navigate to /home if authStore.email() returns falsy', () => {
-    // arrange
-    RouterMock.navigate.calls.reset();
-    AuthStoreMock.email.and.returnValue(null);
-
-    // act
-    TestBed.inject(LoginComponent);
-    fixture.detectChanges();
-
-    // assert
-    expect(RouterMock.navigate).not.toHaveBeenCalled();
   });
 
   describe('ngOnInit', () => {
@@ -146,7 +119,7 @@ describe('LoginComponent', () => {
       beforeEach(() => {
         // arrange
         RememberMeServiceMock.set.calls.reset();
-        AuthStoreMock.login.calls.reset();
+        AuthFasadeServiceMock.login.calls.reset();
         component.loginForm = undefined;
         component.isSubmitted = false;
         fixture.detectChanges();
@@ -165,9 +138,9 @@ describe('LoginComponent', () => {
         expect(RememberMeServiceMock.set).not.toHaveBeenCalled();
       });
 
-      it('should not call AuthStoreMock.login()', () => {
+      it('should not call AuthFasadeService.login()', () => {
         // assert
-        expect(AuthStoreMock.login).not.toHaveBeenCalled();
+        expect(AuthFasadeServiceMock.login).not.toHaveBeenCalled();
       });
     });
 
@@ -187,7 +160,7 @@ describe('LoginComponent', () => {
       beforeEach(() => {
         // arrange
         RememberMeServiceMock.set.calls.reset();
-        AuthStoreMock.login.calls.reset();
+        AuthFasadeServiceMock.login.calls.reset();
         component.loginForm?.reset();
         component.isSubmitted = false;
         fixture.detectChanges();
@@ -201,9 +174,9 @@ describe('LoginComponent', () => {
         expect(RememberMeServiceMock.set).not.toHaveBeenCalled();
       });
 
-      it('should not call AuthStoreMock.login()', () => {
+      it('should not call AuthFasadeService.login()', () => {
         // assert
-        expect(AuthStoreMock.login).not.toHaveBeenCalled();
+        expect(AuthFasadeServiceMock.login).not.toHaveBeenCalled();
       });
     });
 
@@ -211,7 +184,7 @@ describe('LoginComponent', () => {
       beforeEach(() => {
         // arrange
         RememberMeServiceMock.set.calls.reset();
-        AuthStoreMock.login.calls.reset();
+        AuthFasadeServiceMock.login.calls.reset();
         component.loginForm?.setValue({
           username: TEST_EMAIL,
           password: TEST_PASSWORD,
@@ -234,7 +207,7 @@ describe('LoginComponent', () => {
 
       it('should call AuthStoreMock.login() with expected payload', () => {
         // assert
-        expect(AuthStoreMock.login).toHaveBeenCalledWith({
+        expect(AuthFasadeServiceMock.login).toHaveBeenCalledWith({
           username: TEST_EMAIL,
           password: TEST_PASSWORD,
         });
