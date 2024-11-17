@@ -1,8 +1,10 @@
 <div class="content__container">
   <div class="card">
-    <h1 class="card__title">Home</h1>
+    <h1 class="card__title spacer">Home</h1>
 
-    <p *ngIf="authFasadeService.email$ | async as email">Hello, {{ email }}</p>
+    <p class="spacer" *ngIf="authFasadeService.email$ | async as email">
+      Hello, {{ email }}
+    </p>
 
     <button
       type="button"
