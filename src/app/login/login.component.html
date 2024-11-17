@@ -2,6 +2,12 @@
   <div class="card">
     <h1 class="card__title">SIGN IN TO YOUR ACCOUNT</h1>
 
+    <div
+      class="alert__error"
+      *ngIf="authFasadeService.errorMessage$ | async as errorMessage"
+    >
+      {{ errorMessage }}
+    </div>
 
     @if(loginForm) {
     <form [formGroup]="loginForm" class="form" (submit)="onSubmit()">
@@ -14,8 +20,7 @@
           formControlName="username"
         />
 
-        @if(isSubmitted && loginForm.get('username')?.errors?.['required'])
-        {
+        @if(isSubmitted && loginForm.get('username')?.errors?.['required']) {
         <div class="form__error">Required field</div>
         } @if(isSubmitted && loginForm.get('username')?.errors?.['email']) {
         <div class="form__error">Invalid email address</div>
@@ -30,14 +35,11 @@
           autocomplete="new-password"
           formControlName="password"
         />
-        @if(isSubmitted && loginForm.get('password')?.errors?.['required'])
-        {
+        @if(isSubmitted && loginForm.get('password')?.errors?.['required']) {
         <div class="form__error">Required field</div>
-        } @if(isSubmitted &&
-        loginForm.get('password')?.errors?.['minlength']) {
+        } @if(isSubmitted && loginForm.get('password')?.errors?.['minlength']) {
         <div class="form__error">Min. 6 characters</div>
-        } @if(isSubmitted && loginForm.get('password')?.errors?.['pattern'])
-        {
+        } @if(isSubmitted && loginForm.get('password')?.errors?.['pattern']) {
         <div class="form__error">Invalid password format</div>
         }
       </div>

@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,20 +6,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { PASSWORD_MIN_LENGTH, PASSWORD_PATTERN } from '../shared/constants';
-import { Router } from '@angular/router';
 import { RememberMeService } from '../shared/services/remember-me.service';
+import { AuthFasadeService } from '../store/auth/auth-fasade.service';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, AsyncPipe, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm: FormGroup | undefined;
   isSubmitted = false;
-  private router = inject(Router);
+  authFasadeService = inject(AuthFasadeService);
   private rememberMeService = inject(RememberMeService);
 
   ngOnInit(): void {
@@ -39,6 +40,7 @@ export class LoginComponent {
     }
     const { rememberMe, ...payload } = this.loginForm.value;
 
+    this.authFasadeService.login(payload);
     this.rememberMeService.set(rememberMe, payload.username);
   }
 

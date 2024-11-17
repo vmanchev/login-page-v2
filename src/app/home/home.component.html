@@ -2,9 +2,13 @@
   <div class="card">
     <h1 class="card__title">Home</h1>
 
-    <p>Hello, </p>
+    <p *ngIf="authFasadeService.email$ | async as email">Hello, {{ email }}</p>
 
-    <button type="button" class="form__button">
+    <button
+      type="button"
+      class="form__button"
+      (click)="authFasadeService.logout()"
+    >
       Logout
     </button>
   </div>
