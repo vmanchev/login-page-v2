@@ -25,4 +25,4 @@ npm start
 ## Unit tests and code coverage
 
 1. To run the unit tests use `npm t`
-2. To generate the code coverage: run `npm run test:cc` and open `./coverage/login-page-v1/index.html` in your browser
+2. To generate the code coverage: run `npm run test:cc` and open `./coverage/login-page-v2/index.html` in your browser
