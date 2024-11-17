@@ -1,27 +1,28 @@
 # LoginPageV2
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
+This is a test project, implementing authentication functionality against a mock REST API. 
+The main purpose is to feature the usage of @ngrx/store instead of SignalStore.
 
-## Development server
+Related Kanban board: [https://github.com/users/vmanchev/projects/3](https://github.com/users/vmanchev/projects/3)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Development
 
-## Code scaffolding
+1. Install the project and its dependencies:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+npm install
+```
 
-## Build
+2. Mockup server is enabled for development environment. Check the related code in 
+`main.ts` file. All mockup server related files are located under `./src/mocks`.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+3. Run the Angular project:
 
-## Running unit tests
+```
+npm start
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Unit tests and code coverage
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. To run the unit tests use `npm t`
+2. To generate the code coverage: run `npm run test:cc` and open `./coverage/login-page-v1/index.html` in your browser
